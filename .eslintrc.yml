@@ -1,10 +1,15 @@
-extends: "eslint:recommended"
+plugins:
+  - "mocha"
+extends:
+  - "eslint:recommended"
+  - "plugin:mocha/recommended"
 env:
   node: true
   es6: true
 parserOptions:
   ecmaVersion: 2017
 rules:
+  mocha/no-exclusive-tests: "error"
   array-callback-return: "error"
   block-scoped-var: "error"
   curly: "error"

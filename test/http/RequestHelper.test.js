@@ -2,9 +2,9 @@ const expect = require('chai').expect;
 const nock = require('nock');
 const RequestHelper = require('../../lib/http/RequestHelper');
 
-describe('RequestHelper', () => {
-  describe('addToDefaults', () => {
-    it('can be used to add a new header that should be sent with every request', async () => {
+describe('RequestHelper', function () {
+  describe('addToDefaults', function () {
+    it('can be used to add a new header that should be sent with every request', async function () {
       const request = new RequestHelper();
 
       const mockServer = nock('http://acme.com')
@@ -28,8 +28,8 @@ describe('RequestHelper', () => {
     });
   });
 
-  describe('get', () => {
-    it('can GET JSON from a URL', async () => {
+  describe('get', function () {
+    it('can GET JSON from a URL', async function () {
       const request = new RequestHelper();
       const mockServer = nock('http://acme.com')
         .get('/wat')
@@ -43,7 +43,7 @@ describe('RequestHelper', () => {
       expect(mockServer.isDone()).to.equal(true);
     });
 
-    it('can provide custom request headers', async () => {
+    it('can provide custom request headers', async function () {
       const request = new RequestHelper();
       const mockServer = nock('http://acme.com')
         .get('/wat')
@@ -65,7 +65,7 @@ describe('RequestHelper', () => {
       expect(mockServer.isDone()).to.equal(true);
     });
 
-    it('emits "response" event with the response object', done => {
+    it('emits "response" event with the response object', function (done) {
       const request = new RequestHelper();
       nock('http://acme.com')
         .get('/wat')
@@ -81,8 +81,8 @@ describe('RequestHelper', () => {
     });
   });
 
-  describe('put', () => {
-    it('can send bytes', async () => {
+  describe('put', function () {
+    it('can send bytes', async function () {
       const request = new RequestHelper();
       const mockServer = nock('http://acme.com')
         .put('/someFile')
@@ -98,7 +98,7 @@ describe('RequestHelper', () => {
       expect(mockServer.isDone()).to.equal(true);
     });
 
-    it('emits "response" event with the response object', done => {
+    it('emits "response" event with the response object', function (done) {
       const request = new RequestHelper();
       nock('http://acme.com')
         .put('/someFile')
@@ -114,8 +114,8 @@ describe('RequestHelper', () => {
     });
   });
 
-  describe('post', () => {
-    it('can POST a JSON string', async () => {
+  describe('post', function () {
+    it('can POST a JSON string', async function () {
       const request = new RequestHelper();
       const mockServer = nock('http://acme.com')
         .post('/doSomething')
@@ -134,7 +134,7 @@ describe('RequestHelper', () => {
       expect(mockServer.isDone()).to.equal(true);
     });
 
-    it('emits "response" event with the response object', done => {
+    it('emits "response" event with the response object', function (done) {
       const request = new RequestHelper();
       nock('http://acme.com')
         .post('/doSomething')
@@ -150,8 +150,8 @@ describe('RequestHelper', () => {
     });
   });
 
-  describe('delete', () => {
-    it('can DELETE a resource', async () => {
+  describe('delete', function () {
+    it('can DELETE a resource', async function () {
       const request = new RequestHelper();
       const mockServer = nock('http://acme.com')
         .delete('/apples/123')
@@ -161,7 +161,7 @@ describe('RequestHelper', () => {
       expect(mockServer.isDone()).to.equal(true);
     });
 
-    it('emits "response" event with the response object', done => {
+    it('emits "response" event with the response object', function (done) {
       const request = new RequestHelper();
       nock('http://acme.com')
         .delete('/apples/123')
@@ -177,8 +177,8 @@ describe('RequestHelper', () => {
     });
   });
 
-  describe('createNewInstanceWithAdditionalDefaults', () => {
-    it('creates a new RequestHelper object configured with extended defaults', async () => {
+  describe('createNewInstanceWithAdditionalDefaults', function () {
+    it('creates a new RequestHelper object configured with extended defaults', async function () {
       const request = new RequestHelper();
       const subRequest = request.createNewInstanceWithAdditionalDefaults({ headers: { 'Acs-Api-Key': 'WAT123' }});
 
@@ -197,59 +197,61 @@ describe('RequestHelper', () => {
     });
   });
 
-  describe('options.baseUrl', () => {
-    describe('without a trailing slash', () => {
+  describe('options.baseUrl', function () {
+    describe('without a trailing slash', function () {
       const request = new RequestHelper();
+      // eslint-disable-next-line mocha/no-setup-in-describe
       const withoutTrailingSlash = request.createNewInstanceWithAdditionalDefaults({ baseUrl: 'http://acme.com' });
 
-      it('is applied correctly for get', async () => {
+      it('is applied correctly for get', async function () {
         const mockServer = nock('http://acme.com').get('/wat').reply(200);
         await withoutTrailingSlash.get('/wat');
         expect(mockServer.isDone()).to.equal(true);
       });
 
-      it('is applied correctly for put', async () => {
+      it('is applied correctly for put', async function () {
         const mockServer = nock('http://acme.com').put('/wat').reply(200);
         await withoutTrailingSlash.put('/wat');
         expect(mockServer.isDone()).to.equal(true);
       });
 
-      it('is applied correctly for post', async () => {
+      it('is applied correctly for post', async function () {
         const mockServer = nock('http://acme.com').post('/wat').reply(200);
         await withoutTrailingSlash.post('/wat');
         expect(mockServer.isDone()).to.equal(true);
       });
 
-      it('is applied correctly for delete', async () => {
+      it('is applied correctly for delete', async function () {
         const mockServer = nock('http://acme.com').delete('/wat').reply(200);
         await withoutTrailingSlash.delete('/wat');
         expect(mockServer.isDone()).to.equal(true);
       });
     });
 
-    describe('with a trailing slash', () => {
+    describe('with a trailing slash', function () {
       const request = new RequestHelper();
+      // eslint-disable-next-line mocha/no-setup-in-describe
       const withTrailingSlash = request.createNewInstanceWithAdditionalDefaults({ baseUrl: 'http://acme.com/' });
 
-      it('is applied correctly for get', async () => {
+      it('is applied correctly for get', async function () {
         const mockServer = nock('http://acme.com').get('/wat').reply(200);
         await withTrailingSlash.get('/wat');
         expect(mockServer.isDone()).to.equal(true);
       });
 
-      it('is applied correctly for put', async () => {
+      it('is applied correctly for put', async function () {
         const mockServer = nock('http://acme.com').put('/wat').reply(200);
         await withTrailingSlash.put('/wat');
         expect(mockServer.isDone()).to.equal(true);
       });
 
-      it('is applied correctly for post', async () => {
+      it('is applied correctly for post', async function () {
         const mockServer = nock('http://acme.com').post('/wat').reply(200);
         await withTrailingSlash.post('/wat');
         expect(mockServer.isDone()).to.equal(true);
       });
 
-      it('is applied correctly for delete', async () => {
+      it('is applied correctly for delete', async function () {
         const mockServer = nock('http://acme.com').delete('/wat').reply(200);
         await withTrailingSlash.delete('/wat');
         expect(mockServer.isDone()).to.equal(true);
